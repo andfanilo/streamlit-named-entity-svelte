@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, onDestroy } from "svelte";
+  import { onMount, afterUpdate, onDestroy } from "svelte";
   import { Streamlit } from "./streamlit/streamlit";
   import type { RenderData } from "./streamlit/streamlit";
   import Word from "./components/Word.svelte";
@@ -11,18 +11,32 @@
     end: number;
     label: string;
   }[] = [];
+  let mounted = false;
 
   const onRender = (event: Event): void => {
     const data = (event as CustomEvent<RenderData>).detail;
-    text = data.args["text"];
-    ents = data.args["ents"];
-    Streamlit.setFrameHeight();
+    if (!mounted) {
+      text = data.args["text"];
+      ents = data.args["ents"];
+      mounted = true;
+    }
+  };
+
+  const handleMessage = (event) => {
+    ents.splice(event.detail.id, 1);
+    ents = ents;
+    console.log(ents);
+    Streamlit.setComponentValue(ents);
   };
 
   onMount(() => {
     Streamlit.setComponentReady();
-    Streamlit.setFrameHeight();
     Streamlit.events.addEventListener(Streamlit.RENDER_EVENT, onRender);
+    Streamlit.setFrameHeight();
+  });
+
+  afterUpdate(() => {
+    Streamlit.setFrameHeight();
   });
 
   onDestroy(() => {
@@ -51,9 +65,13 @@
     <h1>Named entity demo</h1>
   </header>
   <main>
-    {#each ents as { start, end, label }, i}
+    {#each ents as { start, end, label }, i (start)}
       {#if i == 0}{text.substring(0, start)}{/if}
-      <MarkedWord words={text.substring(start, end)} {label} />
+      <MarkedWord
+        words={text.substring(start, end)}
+        {label}
+        id={i}
+        on:message={handleMessage} />
       {#if i != ents.length - 1}
         {text.substring(end + 1, ents[i + 1]['start'] - 1)}
       {/if}

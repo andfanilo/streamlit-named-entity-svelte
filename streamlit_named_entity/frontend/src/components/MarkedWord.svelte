@@ -1,6 +1,11 @@
 <script lang="ts">
   export let words: string;
   export let label: string;
+  export let id: number;
+
+  import { createEventDispatcher } from "svelte";
+
+  const dispatch = createEventDispatcher();
 
   const colors = {
     ORG: "#7aecec",
@@ -23,6 +28,12 @@
     PERCENT: "#e4e7d2",
   };
   const labelColor = `background-color: ${colors[label] || "#ddd"}`;
+
+  const handleClick = () => {
+    dispatch("message", {
+      id: id,
+    });
+  };
 </script>
 
 <style>
@@ -75,5 +86,5 @@
 <mark style={labelColor}>
   {words}
   <span class="entity">{label}</span>
-  <span class="delete">x</span>
+  <span class="delete" on:click={handleClick}>x</span>
 </mark>
