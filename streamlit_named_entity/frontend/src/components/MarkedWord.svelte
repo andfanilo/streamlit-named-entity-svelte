@@ -1,6 +1,6 @@
 <script lang="ts">
-  export let word: string;
-  export let entity: string;
+  export let words: string;
+  export let label: string;
 
   const colors = {
     ORG: "#7aecec",
@@ -22,7 +22,7 @@
     CARDINAL: "#e4e7d2",
     PERCENT: "#e4e7d2",
   };
-  const entityColor = `background-color: ${colors[entity] || "#ddd"}`;
+  const labelColor = `background-color: ${colors[label] || "#ddd"}`;
 </script>
 
 <style>
@@ -72,8 +72,8 @@
   }
 </style>
 
-<mark style={entityColor}>
-  {word}
-  <span class="entity">{entity}</span>
+<mark style={labelColor}>
+  {words}
+  <span class="entity">{label}</span>
   <span class="delete">x</span>
 </mark>

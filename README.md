@@ -19,7 +19,7 @@ $ pip install streamlit # install streamlit
 ```
 $ cd streamlit_named_entity/frontend
 $ npm install    # Install npm dependencies
-$ npm run start  # Start the Webpack dev server
+$ npm run dev  # Start the Webpack dev server
 ```
 
 - From a separate terminal, run the template's Streamlit app:

@@ -6,7 +6,8 @@
     label: string;
   }[];
 
-  import Entity from "./components/Entity.svelte";
+  import Word from "./components/Word.svelte";
+  import MarkedWord from "./components/MarkedWord.svelte";
 </script>
 
 <style>
@@ -32,7 +33,7 @@
   <main>
     {#each ents as { start, end, label }, i}
       {#if i == 0}{text.substring(0, start)}{/if}
-      <Entity word={text.substring(start, end)} entity={label} />
+      <MarkedWord words={text.substring(start, end)} {label} />
       {#if i != ents.length - 1}
         {text.substring(end + 1, ents[i + 1]['start'] - 1)}
       {/if}
