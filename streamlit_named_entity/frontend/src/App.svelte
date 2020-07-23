@@ -1,4 +1,11 @@
 <script lang="ts">
+  export let text: string;
+  export let ents: {
+    start: number;
+    end: number;
+    label: string;
+  }[];
+
   import Entity from "./components/Entity.svelte";
 </script>
 
@@ -14,6 +21,7 @@
   }
   main {
     padding: 1em;
+    line-height: 2.5;
   }
 </style>
 
@@ -22,8 +30,13 @@
     <h1>Named entity demo</h1>
   </header>
   <main>
-    Hello
-    <Entity word="Larry page" entity="PRODUCT" />
-    Hello again
+    {#each ents as { start, end, label }, i}
+      {#if i == 0}{text.substring(0, start)}{/if}
+      <Entity word={text.substring(start, end)} entity={label} />
+      {#if i != ents.length - 1}
+        {text.substring(end + 1, ents[i + 1]['start'] - 1)}
+      {/if}
+      {#if i == ents.length - 1}{text.substring(end)}{/if}
+    {/each}
   </main>
 </section>
