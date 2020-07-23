@@ -27,6 +27,7 @@
 
 <style>
   mark {
+    display: inline-block;
     background-color: lightblue;
     padding: 0.45em 0.6em;
     margin: 0 0.25em;
