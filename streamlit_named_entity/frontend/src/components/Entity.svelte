@@ -33,6 +33,7 @@
     margin: 0 0.25em;
     line-height: 1;
     border-radius: 0.35em;
+    position: relative;
   }
 
   .entity {
@@ -43,9 +44,36 @@
     vertical-align: middle;
     margin-left: 0.5rem;
   }
+
+  .delete {
+    top: -7px;
+    left: -7px;
+    color: #fff;
+    width: 14px;
+    height: 14px;
+    display: flex;
+    opacity: 0;
+    z-index: 10;
+    position: absolute;
+    font-size: 0.7em;
+    line-height: 1.1;
+    text-align: center;
+    background-color: #444;
+    align-items: center;
+    border-radius: 50%;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: bold;
+    transition: opacity linear 0.1s;
+  }
+
+  mark:hover .delete {
+    opacity: 1;
+  }
 </style>
 
 <mark style={entityColor}>
   {word}
   <span class="entity">{entity}</span>
+  <span class="delete">x</span>
 </mark>
