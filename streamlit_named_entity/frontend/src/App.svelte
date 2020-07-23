@@ -1,13 +1,33 @@
 <script lang="ts">
-  export let text: string;
-  export let ents: {
+  import { onMount, onDestroy } from "svelte";
+  import { Streamlit } from "./streamlit/streamlit";
+  import type { RenderData } from "./streamlit/streamlit";
+  import Word from "./components/Word.svelte";
+  import MarkedWord from "./components/MarkedWord.svelte";
+
+  let text: string = "";
+  let ents: {
     start: number;
     end: number;
     label: string;
-  }[];
+  }[] = [];
 
-  import Word from "./components/Word.svelte";
-  import MarkedWord from "./components/MarkedWord.svelte";
+  const onRender = (event: Event): void => {
+    const data = (event as CustomEvent<RenderData>).detail;
+    text = data.args["text"];
+    ents = data.args["ents"];
+    Streamlit.setFrameHeight();
+  };
+
+  onMount(() => {
+    Streamlit.setComponentReady();
+    Streamlit.setFrameHeight();
+    Streamlit.events.addEventListener(Streamlit.RENDER_EVENT, onRender);
+  });
+
+  onDestroy(() => {
+    Streamlit.events.removeEventListener(Streamlit.RENDER_EVENT, onRender);
+  });
 </script>
 
 <style>
@@ -38,6 +58,9 @@
         {text.substring(end + 1, ents[i + 1]['start'] - 1)}
       {/if}
       {#if i == ents.length - 1}{text.substring(end)}{/if}
+    {:else}
+      <!-- this block renders when ents.length === 0 -->
+      <p>loading...</p>
     {/each}
   </main>
 </section>

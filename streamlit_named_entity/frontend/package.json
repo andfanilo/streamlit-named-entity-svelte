@@ -23,6 +23,8 @@
     "@tsconfig/svelte": "^1.0.0"
   },
   "dependencies": {
+    "apache-arrow": "^0.17.0",
+    "event-target-shim": "^5.0.1",
     "sirv-cli": "^0.4.4"
   }
 }
